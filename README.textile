@@ -20,6 +20,23 @@ up the .xcodeproj and fire up a rails server in sample_rails_app.
 
 h3. Integrating with your project
 
+h4. The New Way (experimental)
+
+This integration requires a *little* more up-front configuration in your Xcode project, but in exchange, it gives you the ability to easily update to the newest version of ObjectiveResource.
+
+# Download (clone) the objectiveresource project.  Put this in a "good" location that is reasonably sharable by all your projects (e.g. "/Users/myusername/work/objectiveresource")
+## If you do a git clone, you will need to follow it up with "git submodule init" and "git submodule update"
+# Open your iPhone project in Xcode
+# Drag objective_resource.xcodeproj from the Finder into the top level of your iPhone project in Xcode.
+# Select the new objective_resource.xcodeproj element in your project, so that its "parts" (really its build targets) appear in the Detail tab.  Click the checkbox for libObjectiveResource.a, which adds it to your app target.
+# Open the Info panel for the root of your project.  Switch to the Build tab, and make sure All Configurations is selected in the Configuration popup.  You'll need to customize two things here:
+## Search for the User Headers item, and add the path to your clone of the project (e.g. "/Users/myusername/work/objectiveresource").  Click the checkbox to make it recursive.
+## Search for the Other Linker Flags item, and add the following: -ObjC -all_load
+
+Later, when new versions of ObjectiveResource are available, you can simply get the changes from github, and then rebuild your apps;  No need to worry about files in ObjectiveResource or ObjectiveSupport that may have been added, renamed, etc, since all that will be taken care of in the objective_resource Xcode project you get from github.
+
+h4. The Old Way
+
 # Download (clone) the objectiveresource project
 ## If you do a git clone, you will need to follow it up with "git submodule init" and "git submodule update"
 # open the .xcodeproj in XCode for both objectiveresource and your iPhone project
