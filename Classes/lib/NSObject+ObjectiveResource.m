@@ -135,6 +135,26 @@ static NSString *_activeResourcePrefix = nil;
 	return [self findAllRemoteWithResponse:&aError];
 }
 
+// Find all, with optional parameters
++ (NSArray *)findAllRemoteParameterized:(NSDictionary *)params error:(NSError**)aError {
+  NSMutableString *path = [[[self getRemoteCollectionPath] mutableCopy] autorelease];
+  NSEnumerator *keyEnum = [params keyEnumerator];
+  NSString *key;
+  BOOL isFirst = YES;
+  while (key = [keyEnum nextObject]) {
+    NSString *value = [[params objectForKey:key] description];
+    NSString *encodedValue = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedKey = [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [path appendFormat:@"%c%@=%@", (isFirst ? '?' : '&'), encodedKey, encodedValue];
+    isFirst = NO;
+  }
+	Response *res = [Connection get:path withUser:[[self class] getRemoteUser] andPassword:[[self class]  getRemotePassword]];
+	if([res isError] && aError) {
+		*aError = res.error;
+	}
+	return [self performSelector:[self getRemoteParseDataMethod] withObject:res.body];
+}
+
 + (id)findRemote:(NSString *)elementId withResponse:(NSError **)aError {
 	Response *res = [Connection get:[self getRemoteElementPath:elementId] withUser:[[self class] getRemoteUser] andPassword:[[self class]  getRemotePassword]];
 	if([res isError] && aError) {

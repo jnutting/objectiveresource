@@ -40,6 +40,7 @@ typedef enum {
 // Finders
 + (NSArray *)findAllRemote;
 + (NSArray *)findAllRemoteWithResponse:(NSError **)aError;
++ (NSArray *)findAllRemoteParameterized:(NSDictionary *)params error:(NSError**)aError;
 + (id)findRemote:(NSString *)elementId;
 + (id)findRemote:(NSString *)elementId withResponse:(NSError **)aError; 
 
